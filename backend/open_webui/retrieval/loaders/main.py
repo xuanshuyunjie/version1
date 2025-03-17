@@ -21,6 +21,8 @@ from langchain_community.document_loaders import (
 from langchain_core.documents import Document
 from open_webui.env import SRC_LOG_LEVELS, GLOBAL_LOG_LEVEL
 
+from .MinerULoader import MinerULoader  # 相对导入 (如果 `main.py` 也在 `loaders` 目录)
+
 logging.basicConfig(stream=sys.stdout, level=GLOBAL_LOG_LEVEL)
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])
@@ -149,9 +151,8 @@ class Loader:
                 )
         else:
             if file_ext == "pdf":
-                loader = PyPDFLoader(
-                    file_path, extract_images=self.kwargs.get("PDF_EXTRACT_IMAGES")
-                )
+                loader = MinerULoader(file_path, output_path=self.kwargs.get("PDF_OUTPUT_PATH"))
+
             elif file_ext == "csv":
                 loader = CSVLoader(file_path)
             elif file_ext == "rst":

@@ -36,6 +36,25 @@ RUN npm run build
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base
 
+# 安装 Miniconda
+RUN apt-get update && apt-get install -y wget && \
+wget --timeout=60 --tries=3 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /miniconda.sh && \
+bash /miniconda.sh -b -p /opt/conda && \
+rm /miniconda.sh && \
+ln -s /opt/conda/bin/conda /usr/local/bin/conda && \
+conda update -n base -c defaults conda
+
+# 添加 Conda 环境变量
+ENV PATH="/opt/conda/bin:$PATH"
+
+# 创建 Conda 虚拟环境 mineru
+RUN conda create -n mineru python=3.10 -y
+
+# 激活 Conda 环境
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate mineru" >> ~/.bashrc
+# 确保 /app/backend/data/outputpdf 存在
+RUN mkdir -p /app/backend/data/outputpdf && chmod -R 777 /app/backend/data/outputpdf
+
 # Use args
 ARG USE_CUDA
 ARG USE_OLLAMA

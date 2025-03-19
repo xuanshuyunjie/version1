@@ -13,6 +13,12 @@ echo "️ magic-pdf 未安装，正在安装..."
 pip install -U 'magic-pdf[full]' --extra-index-url https://wheels.myhloli.com
 fi
 
+# 确保 `LibreOffice` 安装
+if ! command -v soffice &> /dev/null; then
+    echo "⚡ libreoffice 未安装，正在安装..."
+    apt update && apt install -y libreoffice-core libreoffice-common libreoffice-writer libreoffice-calc libreoffice-impress
+fi
+
 # 🛠️ 下载 MinerU 模型（如果尚未下载）
 if [ ! -f 'download_models_hf.py' ]; then
     echo "📥 下载 MinerU 模型..."

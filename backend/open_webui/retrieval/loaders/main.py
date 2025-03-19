@@ -170,7 +170,7 @@ class Loader:
                 == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 or file_ext == "docx"
             ):
-                loader = Docx2txtLoader(file_path)
+                loader = MinerULoader(file_path, output_path=self.kwargs.get("PDF_OUTPUT_PATH"))
             elif file_content_type in [
                 "application/vnd.ms-excel",
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -180,7 +180,7 @@ class Loader:
                 "application/vnd.ms-powerpoint",
                 "application/vnd.openxmlformats-officedocument.presentationml.presentation",
             ] or file_ext in ["ppt", "pptx"]:
-                loader = UnstructuredPowerPointLoader(file_path)
+                loader = MinerULoader(file_path, output_path=self.kwargs.get("PDF_OUTPUT_PATH"))
             elif file_ext == "msg":
                 loader = OutlookMessageLoader(file_path)
             elif file_ext in known_source_ext or (

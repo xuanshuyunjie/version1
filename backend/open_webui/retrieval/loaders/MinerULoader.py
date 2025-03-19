@@ -30,13 +30,20 @@ class MinerULoader:
         4. 返回一个 Document 列表
         """
         # ✅ 修正 `conda activate` 的使用
+#         command = [
+#             "bash", "-c",
+#             f"""
+#             source ~/miniconda3/etc/profile.d/conda.sh && \
+#             conda activate mineru || (conda create -n mineru python=3.10 -y && conda activate mineru) && \
+#             pip install -U 'magic-pdf[full]' --extra-index-url https://wheels.myhloli.com && \
+#             magic-pdf -p '{self.input_path}' -o '{self.output_path}' -m auto
+#             """
+#         ]
         command = [
             "bash", "-c",
-
-            #"source /miniconda3/etc/profile.d/conda.sh && conda activate mineru && magic-pdf -p '{}' -o '{}' -m auto".format(self.input_path, self.output_path)
-
             "source /opt/conda/etc/profile.d/conda.sh && conda activate mineru && magic-pdf -p '{}' -o '{}' -m auto".format(self.input_path, self.output_path)
         ]
+
         print(f"🚀 DEBUG: 执行命令: {command}")
         print(f"DEBUG: input_path={self.input_path}, output_path={self.output_path}")
 
@@ -52,7 +59,11 @@ class MinerULoader:
 
         # 根据 input_path 构造 .md 文件名（UUID_test 这样的拼法）
         base_filename = os.path.basename(self.input_path)  # e.g. "0a121757-9af0-457e-8cd9-3979e5373de8_test.pdf"
-        uuid_dir = base_filename.replace(".pdf", "")       # e.g. "0a121757-9af0-457e-8cd9-3979e5373de8_test"
+        # 先移除所有可能的扩展名
+        uuid_dir = re.sub(r"\.(pdf|ppt|pptx|doc|docx)$", "", base_filename, flags=re.IGNORECASE)
+
+        print(uuid_dir)  # 这里测试一下结果
+
 
         # 拼接出生成的 .md 文件绝对路径
         md_file_path = os.path.join(self.output_path, uuid_dir, "auto", f"{uuid_dir}.md")

@@ -255,7 +255,7 @@ async def update_config(
 
 @cached(ttl=3)
 async def get_all_models(request: Request):
-    log.info("get_all_models()")
+    log.info("OLLAMA : get_all_models()")
     if request.app.state.config.ENABLE_OLLAMA_API:
         request_tasks = []
         for idx, url in enumerate(request.app.state.config.OLLAMA_BASE_URLS):

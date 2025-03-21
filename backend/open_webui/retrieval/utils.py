@@ -10,6 +10,7 @@ from huggingface_hub import snapshot_download
 from langchain.retrievers import ContextualCompressionRetriever, EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
+from modelscope.hub.snapshot_download import snapshot_download
 
 
 from open_webui.config import VECTOR_DB
@@ -490,8 +491,8 @@ def get_model_path(model: str, update_model: bool = False):
 
     # Attempt to query the huggingface_hub library to determine the local path and/or to update
     try:
-        #model_repo_path = snapshot_download(**snapshot_kwargs)
-        model_repo_path = get_model_path("/home/chenxuan/桌面/all-MiniLM-L6-v2")
+        model_repo_path = snapshot_download(**snapshot_kwargs)
+        #model_repo_path = get_model_path("/home/chenxuan/桌面/all-MiniLM-L6-v2")
         log.debug(f"model_repo_path: {model_repo_path}")
         return model_repo_path
     except Exception as e:

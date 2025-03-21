@@ -39,6 +39,7 @@ class MinerULoader:
 #             magic-pdf -p '{self.input_path}' -o '{self.output_path}' -m auto
 #             """
 #         ]
+
         command = [
             "bash", "-c",
             "source /opt/conda/etc/profile.d/conda.sh && conda activate mineru && magic-pdf -p '{}' -o '{}' -m auto".format(self.input_path, self.output_path)

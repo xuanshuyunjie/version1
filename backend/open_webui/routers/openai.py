@@ -353,9 +353,11 @@ async def get_filtered_models(models, user):
 
 @cached(ttl=3)
 async def get_all_models(request: Request) -> dict[str, list]:
-    log.info("get_all_models()")
+    log.info("ENABLE_OPENAI_API：true")
+    log.info("OPENAI : get_all_models()")
 
     if not request.app.state.config.ENABLE_OPENAI_API:
+        log.info("ENABLE_OPENAI_API：false")
         return {"data": []}
 
     responses = await get_all_models_responses(request)
